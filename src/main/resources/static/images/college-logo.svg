@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="160" height="48" viewBox="0 0 320 96">
+  <rect rx="12" width="320" height="96" fill="#2147a8" />
+  <text x="50" y="60" font-family="Arial, Helvetica, sans-serif" font-size="38" fill="#fff">College</text>
+  <circle cx="28" cy="48" r="22" fill="#1f9cf0" />
+  <text x="20" y="58" font-family="Arial, Helvetica, sans-serif" font-size="20" fill="#fff">C</text>
+</svg>

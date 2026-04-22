@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Smart Complaint Management System</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body class="auth-page">
+    <div class="app-shell">
+        <header class="header-auth">
+            <a href="index.html" class="logo-link" style="display:flex;align-items:center;gap:12px;">
+                <img src="https://mit.asia/wp-content/uploads/2025/05/MIT-new-logo-4.png" alt="MIT Logo" class="logo-image" style="height:48px; width: auto; object-fit: contain;">
+                <h1>SCMS</h1>
+            </a>
+        </header>
+
+        <main class="auth-main">
+            <div class="auth-container">
+                <div class="auth-card">
+                    <h2>Welcome Back</h2>
+                    <p class="auth-subtitle">Login to your account</p>
+
+                    <div id="status-message" class="status-card hidden"></div>
+
+                    <form id="login-form">
+                        <div class="form-group">
+                            <label for="login-email">Email Address</label>
+                            <input 
+                                type="email" 
+                                id="login-email" 
+                                name="email"
+                                placeholder="Enter your email"
+                                required
+                            >
+                        </div>
+
+                        <div class="form-group">
+                            <label for="login-password">Password</label>
+                            <input 
+                                type="password" 
+                                id="login-password" 
+                                name="password"
+                                placeholder="Enter your password"
+                                required
+                            >
+                        </div>
+
+                        <button type="submit" class="btn btn-primary btn-block">
+                            Login
+                        </button>
+                    </form>
+
+                    <div class="auth-footer">
+                        <p>Don't have an account? <a href="register.html">Register here</a></p>
+                        <p><a href="index.html" class="link-text">Back to home</a></p>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="shared.js"></script>
+    <script src="auth.js"></script>
+    <script>
+        document.getElementById('login-form').addEventListener('submit', async (event) => {
+            event.preventDefault();
+            const email = document.getElementById('login-email').value.trim();
+            const password = document.getElementById('login-password').value.trim();
+
+            try {
+                const response = await fetch('/auth/login', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email, password })
+                });
+
+                if (!response.ok) {
+                    showMessage('Login failed: Invalid email or password.', 'danger', 'status-message');
+                    return;
+                }
+
+                const user = await response.json();
+                localStorage.setItem('currentUser', JSON.stringify(user));
+                showMessage(`Welcome back, ${user.name}!`, 'success', 'status-message');
+                
+                setTimeout(() => {
+                    window.location.href = 'dashboard.html';
+                }, 1500);
+            } catch (error) {
+                showMessage('An error occurred. Please try again.', 'danger', 'status-message');
+            }
+        });
+    </script>
+</body>
+</html>

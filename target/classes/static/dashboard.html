@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Smart Complaint Management System</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body class="dashboard-page">
+    <div class="dashboard-shell">
+        <aside class="sidebar">
+            <div class="sidebar-header" style="display:flex;align-items:center;gap:12px;">
+                <img src="https://mit.asia/wp-content/uploads/2025/05/MIT-new-logo-4.png" alt="MIT Logo" style="height:36px; width: auto; object-fit: contain;">
+                <h2>SCMS</h2>
+            </div>
+
+            <div class="user-info">
+                <div class="user-avatar" id="user-avatar">U</div>
+                <div class="user-details" style="flex: 1;">
+                    <p class="user-name" id="user-name">User</p>
+                    <p class="user-role" id="user-role">Role</p>
+                </div>
+            </div>
+
+            <nav class="sidebar-nav">
+                <div class="notifications-wrapper" style="position: relative; margin-right: 8px;">
+                    <button id="notif-btn" class="btn btn-outline btn-sm" style="padding: 8px; border: none; background: transparent; font-size: 1.2rem; cursor: pointer;">
+                        🔔<span id="notif-badge" class="badge" style="position: absolute; top: -5px; right: -5px; background: var(--danger); font-size: 0.7rem; border-radius: 50%; padding: 2px 6px; display: none;">0</span>
+                    </button>
+                    <div id="notif-dropdown" class="hidden">
+                    </div>
+                </div>
+                <a href="#" onclick="showPanel(event, 'user')" id="nav-user" class="nav-item nav-item-hidden">
+                    📝 Complaints
+                </a>
+                <a href="#" onclick="showPanel(event, 'admin')" id="nav-admin" class="nav-item nav-item-hidden">
+                    👥 Admin
+                </a>
+                <a href="#" onclick="showPanel(event, 'staff')" id="nav-staff" class="nav-item nav-item-hidden">
+                    ⚙️ Staff
+                </a>
+                <a href="login.html" onclick="logout(event); return false;" class="nav-item nav-logout">
+                    🚪
+                </a>
+            </nav>
+        </aside>
+
+        <main class="dashboard-main">
+            <div id="status-message" class="status-card hidden"></div>
+
+            <!-- User Panel -->
+            <section id="user-panel" class="dashboard-panel hidden">
+                <div class="panel-header">
+                    <h2>User Dashboard</h2>
+                </div>
+
+                <div class="dashboard-grid">
+                    <div class="dashboard-card">
+                        <h3>Submit a Complaint</h3>
+                        <form id="complaint-form">
+                            <div class="form-group">
+                                <label for="complaint-title">Title</label>
+                                <input type="text" id="complaint-title" placeholder="Brief complaint title" required>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="complaint-description">Description</label>
+                                <textarea id="complaint-description" placeholder="Detailed description" rows="4" required></textarea>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="complaint-category">Category</label>
+                                <select id="complaint-category" required>
+                                    <option value="">Select category</option>
+                                    <option value="Food">Food</option>
+                                    <option value="Maintenance">Maintenance</option>
+                                    <option value="Safety">Safety</option>
+                                    <option value="Other">Other</option>
+                                </select>
+                            </div>
+
+                            <button type="submit" class="btn btn-primary btn-block">Submit Complaint</button>
+                        </form>
+                    </div>
+
+                    <div class="dashboard-card">
+                        <h3>My Complaints</h3>
+                        <div class="table-responsive">
+                            <table id="user-complaint-table">
+                                <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Title</th>
+                                        <th>Category</th>
+                                        <th>Status</th>
+                                        <th>Assigned Staff</th>
+                                        <th>Track</th>
+                                    </tr>
+                                </thead>
+                                <tbody></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Admin Panel -->
+            <section id="admin-panel" class="dashboard-panel hidden">
+                <div class="panel-header">
+                    <h2>Admin Dashboard</h2>
+                </div>
+
+                <div class="admin-tabs">
+                    <button class="tab-btn tab-active" onclick="switchAdminTab(event, 'complaints')">All Complaints</button>
+                    <button class="tab-btn" onclick="switchAdminTab(event, 'users')">Users Management</button>
+                    <button class="tab-btn" onclick="switchAdminTab(event, 'staff')">Staff Management</button>
+                </div>
+
+                <div id="admin-complaints-tab" class="admin-tab">
+                    <div class="table-responsive">
+                        <table id="admin-complaint-table">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Title</th>
+                                    <th>User</th>
+                                    <th>Category</th>
+                                    <th>Status</th>
+                                    <th>Assigned Staff</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div id="admin-users-tab" class="admin-tab hidden">
+                    <div class="table-responsive">
+                        <table id="admin-user-table">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Name</th>
+                                    <th>Email</th>
+                                    <th>Role</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div id="admin-staff-tab" class="admin-tab hidden">
+                    <div class="table-responsive">
+                        <table id="admin-staff-table">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Name</th>
+                                    <th>Email</th>
+                                    <th>Assigned Complaints</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Staff Panel -->
+            <section id="staff-panel" class="dashboard-panel hidden">
+                <div class="panel-header">
+                    <h2>Staff Dashboard</h2>
+                </div>
+
+                <div class="dashboard-card">
+                    <h3>Assigned Complaints</h3>
+                    <div class="table-responsive">
+                        <table id="staff-complaint-table">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Title</th>
+                                    <th>User</th>
+                                    <th>Category</th>
+                                    <th>Status</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <div id="tracking-modal" class="modal-overlay hidden">
+        <div class="modal-card">
+            <div class="modal-header">
+                <h2>Complaint Tracking</h2>
+                <button onclick="closeTrackingModal()" class="close-btn">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="complaint-info">
+                    <h3 id="modal-title"></h3>
+                    <p id="modal-desc" class="text-muted"></p>
+                </div>
+                <div class="timeline" id="complaint-timeline">
+                    <!-- Timeline items injected here -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="shared.js"></script>
+    <script src="dashboard-app.js"></script>
+</body>
+</html>

@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Complaint Management System</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="app-shell">
+        <nav class="navbar">
+            <div class="navbar-container">
+                <a href="index.html" class="navbar-brand">
+                    <img src="https://mit.asia/wp-content/uploads/2025/05/MIT-new-logo-4.png" alt="MIT Logo" style="height: 48px; width: auto; object-fit: contain;">
+                    <span class="brand-text">SCMS</span>
+                </a>
+                
+                <button class="mobile-menu-toggle" aria-label="Toggle Menu">
+                    <span class="bar"></span>
+                    <span class="bar"></span>
+                    <span class="bar"></span>
+                </button>
+
+                <div class="navbar-menu">
+                    <ul class="nav-links">
+                        <li><a href="#home" class="nav-link active">Home</a></li>
+                        <li><a href="#features" class="nav-link">Features</a></li>
+                        <li><a href="#how-it-works" class="nav-link">Process</a></li>
+                    </ul>
+                    <div class="nav-buttons">
+                        <a href="login.html" class="btn btn-outline-primary btn-sm">Login</a>
+                        <a href="register.html" class="btn btn-primary btn-sm">Register</a>
+                    </div>
+                </div>
+            </div>
+        </nav>
+
+        <main id="home">
+            <section class="hero bg-gradient-animated">
+                <div class="hero-content">
+                    <h1 class="hero-title">Hostel Complaint Management System</h1>
+                    <p class="subtitle-hero">Streamlined complaint resolution for users, staff, and administrators.</p>
+                    <div class="cta-buttons">
+                        <a href="login.html" class="btn btn-primary btn-lg">Get Started</a>
+                        <a href="#features" class="btn btn-outline btn-lg">Learn More</a>
+                    </div>
+                </div>
+            </section>
+
+            <section id="features" class="features-section">
+                <h2>Key Features</h2>
+                <div class="features-grid">
+                    <div class="feature-card">
+                        <div class="feature-icon">📝</div>
+                        <h3>Submit Complaints</h3>
+                        <p>Easily submit and track your complaints with detailed information and real-time status updates.</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">👥</div>
+                        <h3>Admin Dashboard</h3>
+                        <p>Comprehensive admin panel to manage all complaints, users, and staff assignments.</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">⚙️</div>
+                        <h3>Staff Management</h3>
+                        <p>Staff portal to view assigned complaints and update their resolution status.</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">📊</div>
+                        <h3>Real-time Updates</h3>
+                        <p>Get instant notifications and updates on complaint status and assignments.</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">🔒</div>
+                        <h3>Secure Access</h3>
+                        <p>JWT-based authentication ensures secure access to your account and data.</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">📱</div>
+                        <h3>Responsive Design</h3>
+                        <p>Access the system from any device with our fully responsive interface.</p>
+                    </div>
+                </div>
+            </section>
+
+            <section id="how-it-works" class="how-it-works">
+                <h2>How It Works</h2>
+                <div class="steps">
+                    <div class="step">
+                        <div class="step-number">1</div>
+                        <h3>Register</h3>
+                        <p>Create an account with your email and password</p>
+                    </div>
+                    <div class="step">
+                        <div class="step-number">2</div>
+                        <h3>Login</h3>
+                        <p>Access your personalized dashboard</p>
+                    </div>
+                    <div class="step">
+                        <div class="step-number">3</div>
+                        <h3>Submit/Manage</h3>
+                        <p>Submit complaints or manage according to your role</p>
+                    </div>
+                    <div class="step">
+                        <div class="step-number">4</div>
+                        <h3>Track Progress</h3>
+                        <p>Monitor complaint status in real-time</p>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <footer class="footer">
+            <p>&copy; 2026 Smart Complaint Management System(MIT CSN ).All rights reserved.</p>
+        </footer>
+    </div>
+
+    <script>
+        // Mobile Menu Toggle
+        const mobileMenuToggle = document.querySelector('.mobile-menu-toggle');
+        const navbarMenu = document.querySelector('.navbar-menu');
+
+        mobileMenuToggle.addEventListener('click', () => {
+            mobileMenuToggle.classList.toggle('active');
+            navbarMenu.classList.toggle('active');
+        });
+
+        // Close mobile menu on link click
+        document.querySelectorAll('.nav-link').forEach(link => {
+            link.addEventListener('click', () => {
+                mobileMenuToggle.classList.remove('active');
+                navbarMenu.classList.remove('active');
+            });
+        });
+
+        // Smooth scroll and active state updates
+        const sections = document.querySelectorAll('section, main#home');
+        const navLinks = document.querySelectorAll('.nav-link');
+
+        window.addEventListener('scroll', () => {
+            let current = '';
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                if (pageYOffset >= (sectionTop - 150)) {
+                    current = section.getAttribute('id');
+                }
+            });
+
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href') === `#${current}`) {
+                    link.classList.add('active');
+                }
+            });
+        });
+    </script>
+</body>
+</html>

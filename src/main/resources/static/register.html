@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register - Smart Complaint Management System</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body class="auth-page">
+    <div class="app-shell">
+        <header class="header-auth">
+            <a href="index.html" class="logo-link">
+                <h1>SCMS</h1>
+            </a>
+        </header>
+
+        <main class="auth-main">
+            <div class="auth-container">
+                <div class="auth-card">
+                    <h2>Create Account</h2>
+                    <p class="auth-subtitle">Register to get started</p>
+
+                    <div id="status-message" class="status-card hidden"></div>
+
+                    <form id="register-form">
+                        <div class="form-group">
+                            <label for="register-name">Full Name</label>
+                            <input 
+                                type="text" 
+                                id="register-name" 
+                                name="name"
+                                placeholder="Enter your full name"
+                                required
+                            >
+                        </div>
+
+                        <div class="form-group">
+                            <label for="register-email">Email Address</label>
+                            <input 
+                                type="email" 
+                                id="register-email" 
+                                name="email"
+                                placeholder="Enter your email"
+                                required
+                            >
+                        </div>
+
+                        <div class="form-group">
+                            <label for="register-password">Password</label>
+                            <input 
+                                type="password" 
+                                id="register-password" 
+                                name="password"
+                                placeholder="Enter your password (min 6 characters)"
+                                minlength="6"
+                                required
+                            >
+                        </div>
+
+                        <div class="form-group">
+                            <label for="register-role">Account Type</label>
+                            <select id="register-role" name="role" required>
+                                <option value="" disabled selected>Select your role</option>
+                                <option value="USER">User (Submit Complaints)</option>
+                                <option value="ADMIN">Admin (Manage System)</option>
+                                <option value="STAFF">Staff (Handle Complaints)</option>
+                            </select>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary btn-block">
+                            Create Account
+                        </button>
+                    </form>
+
+                    <div class="auth-footer">
+                        <p>Already have an account? <a href="login.html">Login here</a></p>
+                        <p><a href="index.html" class="link-text">Back to home</a></p>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="shared.js"></script>
+    <script src="auth.js"></script>
+    <script>
+        document.getElementById('register-form').addEventListener('submit', async (event) => {
+            event.preventDefault();
+            const name = document.getElementById('register-name').value.trim();
+            const email = document.getElementById('register-email').value.trim();
+            const password = document.getElementById('register-password').value.trim();
+            const role = document.getElementById('register-role').value;
+
+            try {
+                const response = await fetch('/auth/register', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ name, email, password, role })
+                });
+
+                if (!response.ok) {
+                    const errorText = await response.text();
+                    showMessage(`Registration failed: ${errorText}`, 'danger', 'status-message');
+                    return;
+                }
+
+                showMessage('Registration successful! Redirecting to login...', 'success', 'status-message');
+                document.getElementById('register-form').reset();
+                
+                setTimeout(() => {
+                    window.location.href = 'login.html';
+                }, 2000);
+            } catch (error) {
+                showMessage('An error occurred. Please try again.', 'danger', 'status-message');
+            }
+        });
+    </script>
+</body>
+</html>
