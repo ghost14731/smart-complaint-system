@@ -1,19 +1,15 @@
-FROM eclipse-temurin:21-jdk-jammy
+FROM maven:3.9.9-eclipse-temurin-17 AS build
 
 WORKDIR /app
+COPY . .
 
-# Copy source files
-COPY src /app/src
-COPY pom.xml /app/
-COPY application.properties /app/src/main/resources/
+RUN mvn clean package -DskipTests
 
-# Install Maven
-RUN apt-get update && apt-get install -y maven && apt-get clean
+FROM openjdk:17-jdk-slim
 
-# Build the application
-RUN mvn clean package -DskipTests -q || mvn clean compile -q
+WORKDIR /app
+COPY --from=build /app/target/smart-complaint-system-1.0.0.jar app.jar
 
-# Run the application
-CMD ["java", "-cp", "target/classes:${MAVEN_HOME}/lib/*", "com.scms.SmartComplaintSystemApplication"]
+EXPOSE 10000
 
-EXPOSE 8080
+ENTRYPOINT ["java", "-jar", "app.jar"]
